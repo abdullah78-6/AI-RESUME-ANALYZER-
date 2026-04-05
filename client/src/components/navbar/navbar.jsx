@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { control } from "../../redux/slice";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import {toast} from "react-toastify"
 const Navbar=()=>{
     const dispatch=useDispatch();
     const navclass=useSelector(state=>state.main.navclass);
@@ -23,11 +24,14 @@ const Navbar=()=>{
     const Logout=()=>{
         const tok=localStorage.getItem("token");
         const email=localStorage.getItem("email");
+        toast.error("Logout Sucessfully");
         if(email){
             localStorage.removeItem("email");
+            dispatch(control.setbackendemail(""));
         }
         if(tok){
             localStorage.removeItem("token");
+            dispatch(control.settoken(""));
         }
     }
     return <div className="flex justify-between p-3 font-bold shadow-2xl bg-green-900 text-white" >
@@ -45,7 +49,7 @@ const Navbar=()=>{
        
         <div className="flex justify-end gap-9">
             {token?<div className="border-2 rounded-4xl w-9 h-9 text-center">
-                <h1>A</h1></div>:<></>}
+                <h1 className="uppercase">{backendemail.slice(0,1)}</h1></div>:<></>}
             {!token?<button className="bg-white text-green-500 p-2 rounded-2xl hover:bg-green-600 hover:text-white transition ease-in-out duration-200" onClick={()=>dispatch(control.setlogin(true))}>Login</button>:<button className="bg-red-600 text-white p-2 rounded-2xl hover:bg-white hover:text-red-600 transition ease-in-out duration-200"  onClick={Logout}>Logout</button>}
         </div>
  
