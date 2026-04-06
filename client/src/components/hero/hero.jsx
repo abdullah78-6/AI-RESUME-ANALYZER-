@@ -5,16 +5,29 @@ import workerSrc from "pdfjs-dist/build/pdf.worker?url";
 import {toast} from "react-toastify"
 import {useSelector,useDispatch} from "react-redux"
 import { control } from "../../redux/slice";
+import axios from "axios";
 pdfjs.GlobalWorkerOptions.workerSrc=workerSrc
+// cloudinary abdullah02@gmail.com
+// mongodb abdullahqidwai7@gmail.com
 const Hero=()=>{
-    
+    const [cloudurl,setcloudurl]=useState();
     const image=useSelector(state=>state.main.image);
     const dispatch=useDispatch();
-    
+    const url="http://localhost:9000"
     const Sendtobackend=async(file)=>{
         if(file){
             dispatch(control.setimage(file));
-            toast("SEND TO BACKEND");
+           const formdata=new FormData();
+           formdata.append("cv",file);
+           const response=await axios.post(`${url}/api/cv/add`,formdata);
+             if(response.data.success){
+                toast.success(response.data.message);
+                setcloudurl(response.data.url);
+             }
+             else{
+                toast.error(response.data.message);
+             }
+            
         }
         
         
@@ -24,6 +37,8 @@ const Hero=()=>{
         dispatch(control.setimage(""));
         toast("IMAGE DELETED FROM BACKEND ");
     }
+    
+    
 
     
     return <div className="mt-10">
@@ -35,7 +50,7 @@ const Hero=()=>{
                 <img className="w-30" src={URL.createObjectURL(image)}/>
              )}   */}
              {image && image.type==="application/pdf" &&(
-                <Document file={{url:URL.createObjectURL(image)}} key={image?.name}>
+                <Document file={{url:cloudurl}} key={image?.name}>
                     <Page pageNumber={1} width={520} renderTextLayer={false} renderAnnotationLayer={false}/>
                 </Document>
              )}

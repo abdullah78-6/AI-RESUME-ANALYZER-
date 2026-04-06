@@ -1,3 +1,4 @@
+import Footer from "./components/footer/footer";
 import Hero from "./components/hero/hero";
 import Login from "./components/login-popup/Login";
 import Navbar from "./components/navbar/navbar"
@@ -8,6 +9,7 @@ return <>
   <Navbar/>
   {loginstatus?<Login/>:<></>}
   <Hero/>
+  <Footer/>
 </>
 }
 function App() {
