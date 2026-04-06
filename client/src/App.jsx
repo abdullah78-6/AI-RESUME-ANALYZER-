@@ -1,3 +1,4 @@
+import Hero from "./components/hero/hero";
 import Login from "./components/login-popup/Login";
 import Navbar from "./components/navbar/navbar"
 import {useSelector} from "react-redux"
@@ -6,6 +7,7 @@ const Inner=()=>{
 return <>
   <Navbar/>
   {loginstatus?<Login/>:<></>}
+  <Hero/>
 </>
 }
 function App() {

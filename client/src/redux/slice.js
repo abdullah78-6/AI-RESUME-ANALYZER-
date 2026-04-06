@@ -5,7 +5,7 @@ const cvslice=createSlice({
      name:"",
      email:"",
      password:""   
-    },token:"",backendemail:""},
+    },token:"",backendemail:"",image:false},
     reducers:{
         setlogin(state,action){
             state.loginstatus=action.payload;
@@ -29,6 +29,9 @@ const cvslice=createSlice({
         },
         setbackendemail(state,action){
             state.backendemail=action.payload;
+        },
+        setimage(state,action){
+            state.image=action.payload;
         }
         
 
