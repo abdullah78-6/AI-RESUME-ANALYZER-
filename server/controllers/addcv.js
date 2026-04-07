@@ -1,4 +1,4 @@
-import fs from "fs"
+import fs, { access } from "fs"
 import {v2 as cloudinary} from "cloudinary"
 import cvmodel from "../models/cv-store-model.js"
 cloudinary.config({
@@ -12,17 +12,39 @@ const addcv=async(req,res)=>{
         if(!req.file){
            return  res.json({success:false,message:"Please upload cv "});
         }
+        // let resourcetype="image"
+        // if(req.file.mimetype==="application/pdf"){
+        //     resourcetype="raw"
+        // }
        
         const result=await cloudinary.uploader.upload(req.file.path,{
             folder:"uploads",
+            // resource_type:"auto",
+            // use_filename:true,
+            // unique_filename:true,
+            // access_mode:"public"
+            resource_type:"auto",
+            type:"upload"
         })
+        console.log("=== FULL RESULT ===");
+console.log(JSON.stringify(result, null, 2));
+console.log("===================");
+        let pdfUrl=result.secure_url;
+        if(result.format==="pdf"||result.resource_type==="raw"){
+            pdfUrl=result.secure_url
+            .replace("/image/upload/", "/raw/upload/")
+            .replace("/video/upload/", "/raw/upload/");
+        }
+        console.log("final url ",pdfUrl);
+
         const cvstore=new cvmodel({
-            filename:result.secure_url,
+            filename:pdfUrl,
             public_id:result.public_id,
+            resource_type:result.resource_type,
             localfile:req.file.filename
         });
         await cvstore.save();
-        return res.json({success:true,message:"Cv save sucessfully in database",url:result.secure_url});
+        return res.json({success:true,message:"Cv save sucessfully in database",url:pdfUrl});
         
     } catch (error) {
         console.log("add cv error ",error);
@@ -31,7 +53,47 @@ const addcv=async(req,res)=>{
     }
 
 }
-const deletecv=async(req,res)=>{
+const getcv=async(req,res)=>{
+    try {
+        const resumes=await cvmodel.find({});
+        return res.json({status:true,ans:resumes});
+        
+    } catch (error) {
+        console.log("get resume error",error);
+        return res.json({status:false,ans:"Get Resume Error"});
+        
+    }
 
 }
-export {addcv,deletecv}
+const deletecv=async(req,res)=>{
+     try {
+        const cv=await cvmodel.findById(req.body.id);
+      if(!cv){
+    return  res.json({success:false,result:"PRODUCT NOT FOUND"});
+
+        }
+        if(cv){
+            fs.unlink(`uploads/${cv.localfile}`,()=>{});
+
+        }
+         console.log("this is public id ",cv.public_id);
+    if(cv.public_id){
+           
+            await cloudinary.uploader.destroy(cv.public_id,{
+                resource_type:cv.resource_type,
+                invalidate:true
+            });
+
+        }
+        
+        await cvmodel.findByIdAndDelete(req.body.id);
+         res.json({success:true,result:"CV REMOVED SUCESSFULLY "});
+        
+    } catch (error) {
+        console.log("delete error",error);
+         res.json({success:false,result:"DATA DELETE ERROR"});
+        
+    }
+
+}
+export {addcv,deletecv,getcv}

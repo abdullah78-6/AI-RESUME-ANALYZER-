@@ -1,6 +1,6 @@
 import multer from "multer"
 import express from "express"
-import { addcv, deletecv } from "../controllers/addcv.js";
+import { addcv, deletecv, getcv } from "../controllers/addcv.js";
 const addcvrouter=express.Router();
 const storage=multer.diskStorage({
     destination:"uploads",
@@ -11,4 +11,5 @@ const storage=multer.diskStorage({
 const upload=multer({storage:storage});
 addcvrouter.post("/add",upload.single("cv"),addcv);
 addcvrouter.delete("/del",deletecv);
+addcvrouter.get("/get",getcv);
 export default addcvrouter;

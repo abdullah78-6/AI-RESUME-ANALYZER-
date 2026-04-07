@@ -5,7 +5,9 @@ import { FaEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import axios from "axios"
 import {toast} from "react-toastify"
+import { useState } from "react";
 const Login=()=>{
+    const[newp,setnewp]=useState(false);
     const dispatch=useDispatch();
      const logintype=useSelector(state=>state.main.statelog);
     const inputtype=useSelector(state=>state.main.input);
@@ -99,10 +101,17 @@ const Login=()=>{
                 <div>
                 <label className="text-lg font-semibold text-green-900" htmlFor="password">ENTER-PASSWORD</label>
                 </div>
-                <div className="flex gap-3 items-center">
+             {!newp?   <div className="flex gap-3 items-center">
                 <input name="password" onChange={Onchangehandler} value={logindatastructure.password} className=" border border-green-700 p-2 rounded-3xl text-2xl text-gray-700 w-50 md:w-auto lg:w-auto xl:w-auto" type={inputtype}placeholder="enter-password" required/>
                 {inputtype==="text"?<FaRegEye className="text-2xl text-green-800" onClick={()=>changeinginp("password")}/>:<FaEyeSlash className="text-2xl text-green-800" onClick={()=>changeinginp("text")}/>}
-                </div>
+                    
+                </div>:<></>}
+              {logintype==="signin"?  <button className="text-white bg-red-700 p-3  rounded-2xl hover:bg-red-950 transition ease-in-out duration-300 text-xl capitalize " onClick={()=>setnewp(true)}>reset password</button>:<></>}
+               {newp? <div>
+                    <input type="password" placeholder="new password" className=" border border-green-700 p-2 rounded-3xl text-2xl text-gray-700 w-50 md:w-auto lg:w-auto xl:w-auto"/>
+                    <button className="p-2 bg-pink-700  text-xl ml-2 rounded-4xl capitalize text-white hover:bg-pink-900 transition ease-in-out duration-300">reset</button>
+                    <button type="button" onClick={()=>setnewp(false)} className="ml-2 text-red-200 p-2  mt-3 rounded-4xl hover:bg-green-950 transition ease-in-out duration-300  bg-green-700 capitalize text-xl">cancel</button>
+                </div>:<></>}
             </div>
                 <div>
                     {logintype==="signin"?<p className="text-xl w-90 capitalize text-green-600">I accepted the given terms and condetions </p>:<></>}
@@ -113,7 +122,7 @@ const Login=()=>{
              </div>
              <div>
             
-                {logintype==="signup"?<p className=" text-lg font-semibold text-green-900">ALREADY HAVE AN ACCOUNT <span className="text-green-600 hover:underline hover:text-pink-500" onClick={()=>logintypechange("signin")}>Login</span></p>:<p className="text-lg font-semibold text-green-900">DONT HAVE AN ACCOUNT <span onClick={()=>logintypechange("signup")} className="text-green-600 hover:underline hover:text-pink-500">Sign-up</span></p>}
+                {logintype==="signup"?<p className=" text-lg font-semibold text-green-900">ALREADY HAVE AN ACCOUNT <span className="text-green-600 hover:underline hover:text-pink-500" onClick={()=>logintypechange("signin")}>Login</span></p>:<p className="text-lg font-semibold text-green-900">DONT HAVE AN ACCOUNT <span onClick={()=>{logintypechange("signup") ;setnewp(false);}} className="text-green-600 hover:underline hover:text-pink-500">Sign-up</span></p>}
                 </div>
             
             
