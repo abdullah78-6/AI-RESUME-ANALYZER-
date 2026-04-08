@@ -19,23 +19,10 @@ const addcv=async(req,res)=>{
        
         const result=await cloudinary.uploader.upload(req.file.path,{
             folder:"uploads",
-            // resource_type:"auto",
-            // use_filename:true,
-            // unique_filename:true,
-            // access_mode:"public"
             resource_type:"auto",
-            type:"upload"
         })
-        console.log("=== FULL RESULT ===");
-console.log(JSON.stringify(result, null, 2));
-console.log("===================");
-        let pdfUrl=result.secure_url;
-        if(result.format==="pdf"||result.resource_type==="raw"){
-            pdfUrl=result.secure_url
-            .replace("/image/upload/", "/raw/upload/")
-            .replace("/video/upload/", "/raw/upload/");
-        }
-        console.log("final url ",pdfUrl);
+    let pdfUrl=result.secure_url;
+    console.log("final url ",pdfUrl);
 
         const cvstore=new cvmodel({
             filename:pdfUrl,
