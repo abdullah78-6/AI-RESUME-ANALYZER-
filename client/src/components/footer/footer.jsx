@@ -1,5 +1,5 @@
 const Footer=()=>{
-    return <div className="text-gray-800 font-semibold  px-3 py-6 ">
+    return <div className="text-gray-800 font-semibold  px-3 py-6 bg-mist-300 mt-10 ">
         <div className="flex justify-between items-center     flex-wrap">
         <div className=" text-center mt-2 ">
             <h1 className="text-3xl capitalize text-green-600">Resume analyzer</h1>
@@ -25,7 +25,7 @@ const Footer=()=>{
         </div>
         <hr/>
         
-            <h1 className="text-center text-green-600 capitalize text-xl">© 2026. All rights reserved.</h1>
+            <h1 className="text-center text-green-600 capitalize text-sm">© 2026. All rights reserved.</h1>
         
 
     </div>

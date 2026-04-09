@@ -18,7 +18,9 @@ const [loading,setloading]=useState(false);
     const[pdf,setpdf]=useState([]);
     const[image,setimage]=useState(false);
     const dispatch=useDispatch();
+    const token=useSelector(state=>state.main.token);
     const url="http://localhost:9000"
+    const [file,setfile]=useState();
     const fetchresume=async()=>{
         try {
             const response2=await axios.get(`${url}/api/cv/get`);
@@ -39,7 +41,15 @@ const [loading,setloading]=useState(false);
         fetchresume();
 
     },[]);
-    const Sendtobackend=async(file)=>{
+    const Sendtobackend=async()=>{
+        if(!token){
+            toast.error("USER LOGIN REQUIRED");
+            return ;
+        }
+        if(!file){
+            toast.error("PLEASE UPLOAD RESUME")
+            return ;
+        }
         if(file){
             setloading(true);
            const formdata=new FormData();
@@ -51,6 +61,7 @@ const [loading,setloading]=useState(false);
             setpdf(response2.data.ans);
             setloading(false);
             console.log("this is your pdf ",pdf);
+            setfile("");
             
            }
              if(response.data.success){
@@ -94,24 +105,27 @@ const [loading,setloading]=useState(false);
 
     
     return <div className="mt-10">
-        <h1 className="text-center">HERO SECION </h1>
-        {loading?<ClipLoader color="darkgreen" size={40}/>:<></>}
+      <div className="flex justify-center items-center">
+        {loading?<ClipLoader color="darkgreen" size={50}  />:<></>}
+        </div>  
           
    {/* {image?<button onClick={deleteresume} className="p-2 bg-red-600  ml-7 rounded-2xl text-white hover:bg-red-900 transition ease-in-out duration-150">REMOVE RESUME</button>:<></>} */}
-        <div>
+        <div className="flex justify-center items-center gap-2 flex-col mt-5">
             
                  
              {pdf.map((item,index)=>(
                 <div key={index}>
                     {image?
-                    <div>
-                        <h1 className="text-red-700 text-2xl capitalize font-semibold">NOTE: remove old resume before adding new one </h1>
+                    <div className="flex justify-center items-center flex-col gap-15">
+                        <h1 className="text-red-700 text-xl capitalize font-semibold">NOTE: remove old resume before adding new one. </h1>
                         <button onClick={()=>deleteresume(item._id)} className="p-2 bg-red-600  ml-7 rounded-2xl text-white hover:bg-red-900 transition ease-in-out duration-150">REMOVE RESUME</button>
                     </div>:<></>}
                     {image && image?.type==="application/pdf" &&(
-                <Document file={{url:cloudurl}} >
-                    <Page pageNumber={1} width={150} renderTextLayer={false} renderAnnotationLayer={false}/>
+                        <div className="flex justify-center items-center  mt-5">
+                <Document  file={{url:cloudurl}} >
+                    <Page   pageNumber={1} width={250} renderTextLayer={false} renderAnnotationLayer={false}/>
                 </Document>
+                </div>
              )}
              {image&& image?.type?.startsWith("image/")&&(
                 <img className="w-30" src={URL.createObjectURL(image)}/>
@@ -119,16 +133,26 @@ const [loading,setloading]=useState(false);
 
                 </div>
              ))}
-            
+        
+          {!file ?  
+            <div>
              {!image&&(
                 
-                <img src={upload.uploadarea} className="w-30" onClick={()=>fileref.current.click()} />
+               <img   src={upload.uploadarea} className="w-30" onClick={()=>fileref.current.click()} />
                 
                 
              )}
+             </div>:<></>}
+             {file?
+             <Document  file={{url:URL.createObjectURL(file)}} >
+                    <Page   pageNumber={1} width={250} renderTextLayer={false} renderAnnotationLayer={false}/>
+                </Document>:<></>}
 
             
-        <input ref={fileref} onChange={(e)=>Sendtobackend(e.target.files[0])} type="file" id="pdf" className="hidden" accept="application/pdf,image/*"/>
+        <input ref={fileref} onChange={(e)=>setfile(e.target.files[0])} type="file" id="pdf" className="hidden" accept="application/pdf,image/*"/>
+        <div>
+            <button onClick={Sendtobackend} className="font-semibold mt-3 bg-pink-600 p-3 rounded-3xl text-white hover:bg-pink-900 transition ease-in-out duration-200 ">ANALYZE RESUME</button>
+        </div>
         </div>
     </div>
 

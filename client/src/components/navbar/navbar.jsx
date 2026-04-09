@@ -34,14 +34,14 @@ const Navbar=()=>{
             dispatch(control.settoken(""));
         }
     }
-    return <div className="flex justify-between p-3 font-bold shadow-2xl bg-green-900 text-white" >
+    return <div className="flex justify-between p-3 font-semibold shadow-2xl bg-green-900 text-white" >
         <div>
             <h1 className="text-2xl">RESUME-<span className="text-green-300">ANALYZER</span></h1>
 
         </div>
-        <ul className="flex   gap-7 text-xl capitalize">
+        <ul className="flex   gap-23 text-xl capitalize">
             <li onClick={()=>dispatch(control.setnav("home"))} className={`cursor-pointer ${navclass==="home"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>home</li>
-            <li onClick={()=>dispatch(control.setnav("contact-us"))} className={`cursor-pointer ${navclass==="contact-us"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>contact-us</li>
+            <li onClick={()=>dispatch(control.setnav("contact-us"))} className={`cursor-pointer ${navclass==="contact-us"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>steps</li>
             <li onClick={()=>dispatch(control.setnav("scancv"))} className={`cursor-pointer ${navclass==="scancv"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>scan-cv</li>
         </ul>
        
