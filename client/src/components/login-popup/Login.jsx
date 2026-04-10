@@ -13,6 +13,7 @@ const Login=()=>{
     const inputtype=useSelector(state=>state.main.input);
     const logindatastructure=useSelector(state=>state.main.logindata);
     const url="http://localhost:9000";
+    const[newpassword,setnewpassword]=useState("");
    const Onchangehandler=(event)=>{
     dispatch(control.setloginds({
         name:event.target.name,
@@ -67,6 +68,32 @@ const Login=()=>{
     
 
 }
+const Resetpassword=async()=>{
+try {
+   
+    if(!newpassword){
+        toast.error("ENTER  PASSWORD AND EMAIL");
+        return ;
+    }
+        const response=await axios.post("http://localhost:9000/api/auth/new",{newpassword,email:logindatastructure.email});
+        if(response.data.status){
+            toast.success(response.data.message);
+        }
+        else{
+            toast.error(response.data.message);
+        }
+
+        
+        
+    } catch (error) {
+        console.log("reset password error",error);
+        toast.error("RESET FAILED");
+        
+    }
+    
+
+
+}
    
     return <div className="inset-0 fixed flex flex-col justify-center items-center bg-black/40 backdrop-blur-sm  ">
         
@@ -106,10 +133,10 @@ const Login=()=>{
                 {inputtype==="text"?<FaRegEye className="text-2xl text-green-800" onClick={()=>changeinginp("password")}/>:<FaEyeSlash className="text-2xl text-green-800" onClick={()=>changeinginp("text")}/>}
                     
                 </div>:<></>}
-              {logintype==="signin"?  <button className="text-white bg-red-700 p-3  rounded-2xl hover:bg-red-950 transition ease-in-out duration-300 text-xl capitalize " onClick={()=>setnewp(true)}>reset password</button>:<></>}
+              {logintype==="signin"?  <button type="button" className="text-white bg-red-700 p-3  rounded-2xl hover:bg-red-950 transition ease-in-out duration-300 text-xl capitalize " onClick={()=>setnewp(true)}>forgot password</button>:<></>}
                {newp? <div>
-                    <input type="password" placeholder="new password" className=" border border-green-700 p-2 rounded-3xl text-2xl text-gray-700 w-50 md:w-auto lg:w-auto xl:w-auto"/>
-                    <button className="p-2 bg-pink-700  text-xl ml-2 rounded-4xl capitalize text-white hover:bg-pink-900 transition ease-in-out duration-300">reset</button>
+                    <input onChange={(e)=>setnewpassword(e.target.value)} type="password" placeholder="new password" className=" border border-green-700 p-2 rounded-3xl text-2xl text-gray-700 w-50 md:w-auto lg:w-auto xl:w-auto"/>
+                    <button type="button" onClick={Resetpassword} className="p-2 bg-pink-700  text-xl ml-2 rounded-4xl capitalize text-white hover:bg-pink-900 transition ease-in-out duration-300">reset</button>
                     <button type="button" onClick={()=>setnewp(false)} className="ml-2 text-red-200 p-2  mt-3 rounded-4xl hover:bg-green-950 transition ease-in-out duration-300  bg-green-700 capitalize text-xl">cancel</button>
                 </div>:<></>}
             </div>

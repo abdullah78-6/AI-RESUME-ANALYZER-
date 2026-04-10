@@ -58,4 +58,33 @@ const login=async(req,res)=>{
     
 
 }
-export {register,login}
+const Reset=async(req,res)=>{
+    const {newpassword,email}=req.body;
+    try {
+      const salt=await bcrypt.genSalt(10);
+      const oldpassword=await usermodel.findOne({newpassword});
+      const user=await usermodel.findOne({email});
+      if(!user){
+        return res.json({status:false,message:"USER NOT FOUND"});
+      }
+        const newhashedpassword= await bcrypt.hash(newpassword,salt);
+        const result=await usermodel.updateOne(
+            {email},
+            {
+                $set:{password:newhashedpassword}
+            }
+        )
+        if(result){
+            res.json({status:true,message:"PASSWORD IS RESET "});
+        }
+        else{
+            res.json({status:false,message:"USER NOT FOUND"});
+        }
+        } catch (error) {
+        console.log("reset password error",error);
+        res.json({status:false,message:"RESET PASSWORD ERROR"});
+        
+    }
+
+}
+export {register,login,Reset}

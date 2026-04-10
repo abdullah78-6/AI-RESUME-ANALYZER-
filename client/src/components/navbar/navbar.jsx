@@ -36,13 +36,13 @@ const Navbar=()=>{
     }
     return <div className="flex justify-between p-3 font-semibold shadow-2xl bg-green-900 text-white" >
         <div>
-            <h1 className="text-2xl">RESUME-<span className="text-green-300">ANALYZER</span></h1>
+            <h1 className="text-sm md:text-2xl lg:text-2xl xl:text-2xl">RESUME-<span className="text-green-300">ANALYZER</span></h1>
 
         </div>
-        <ul className="flex   gap-23 text-xl capitalize">
-            <li onClick={()=>dispatch(control.setnav("home"))} className={`cursor-pointer ${navclass==="home"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>home</li>
-            <li onClick={()=>dispatch(control.setnav("contact-us"))} className={`cursor-pointer ${navclass==="contact-us"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>steps</li>
-            <li onClick={()=>dispatch(control.setnav("scancv"))} className={`cursor-pointer ${navclass==="scancv"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>scan-cv</li>
+        <ul className="  hidden  lg:flex   lg:gap-23 lg:text-xl lg:capitalize md:flex   md:gap-23 md:text-xl md:capitalize xl:flex   xl:gap-23 xl:text-xl xl:capitalize">
+            <a href="/" onClick={()=>dispatch(control.setnav("home"))} className={`cursor-pointer ${navclass==="home"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>home</a>
+            <a href="#s" onClick={()=>dispatch(control.setnav("contact-us"))} className={`cursor-pointer ${navclass==="contact-us"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>steps</a>
+            <a href="#sc" onClick={()=>dispatch(control.setnav("scancv"))} className={`cursor-pointer ${navclass==="scancv"?" border-b-3 border-b-white mb-2  ":"hover:text-green-600 transition ease-in-out duration-200"}`}>scan-cv</a>
         </ul>
        
             

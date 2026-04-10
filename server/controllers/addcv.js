@@ -1,6 +1,9 @@
 import fs, { access } from "fs"
 import {v2 as cloudinary} from "cloudinary"
 import cvmodel from "../models/cv-store-model.js"
+import axios from "axios"
+// import {GoogleGenerativeAI} from "@google/generative-ai"
+// const apikey2=process.env.gemniapikey;
 cloudinary.config({
     cloud_name:process.env.cloudname,
     api_key:process.env.api_keycloud,
@@ -12,23 +15,28 @@ const addcv=async(req,res)=>{
         if(!req.file){
            return  res.json({success:false,message:"Please upload cv "});
         }
-        // let resourcetype="image"
-        // if(req.file.mimetype==="application/pdf"){
-        //     resourcetype="raw"
-        // }
-       
         const result=await cloudinary.uploader.upload(req.file.path,{
             folder:"uploads",
             resource_type:"auto",
         })
     let pdfUrl=result.secure_url;
     console.log("final url ",pdfUrl);
-
-        const cvstore=new cvmodel({
+    // AI INTENGARTION FOR ANALYZER 
+    // const genai=new GoogleGenerativeAI(apikey2);
+    // const model=genai.getGenerativeModel({model:"gemini-1.5-flash-latest"})
+    // const prompt=`
+    // fifa full form 
+    // `
+    // const response=await model.generateContent(prompt);
+    // const airesult=response.response.text();
+    // console.log("AI RESULT",airesult);
+    
+const cvstore=new cvmodel({
             filename:pdfUrl,
             public_id:result.public_id,
             resource_type:result.resource_type,
-            localfile:req.file.filename
+            localfile:req.file.filename,
+            // analysis:airesult
         });
         await cvstore.save();
         return res.json({success:true,message:"Cv save sucessfully in database",url:pdfUrl});

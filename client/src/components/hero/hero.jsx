@@ -12,6 +12,12 @@ pdfjs.GlobalWorkerOptions.workerSrc=workerSrc
 // cloudinary abdullah02@gmail.com
 // mongodb abdullahqidwai7@gmail.com
 const Hero=()=>{
+    useEffect(()=>{
+    pdfjs.GlobalWorkerOptions.workerSrc=workerSrc
+
+},[]);
+const [preview,setpreview]=useState(null);
+
     const fileref=useRef();
 const [cloudurl,setcloudurl]=useState(null);
 const [loading,setloading]=useState(false);
@@ -21,6 +27,11 @@ const [loading,setloading]=useState(false);
     const token=useSelector(state=>state.main.token);
     const url="http://localhost:9000"
     const [file,setfile]=useState();
+    useEffect(()=>{
+        if(file){
+            setpreview(URL.createObjectURL(file));
+        }
+    },[file]);
     const fetchresume=async()=>{
         try {
             const response2=await axios.get(`${url}/api/cv/get`);
@@ -110,7 +121,7 @@ const [loading,setloading]=useState(false);
         </div>  
           
    {/* {image?<button onClick={deleteresume} className="p-2 bg-red-600  ml-7 rounded-2xl text-white hover:bg-red-900 transition ease-in-out duration-150">REMOVE RESUME</button>:<></>} */}
-        <div className="flex justify-center items-center gap-2 flex-col mt-5">
+        <div className="flex justify-center items-center gap-2 flex-col mt-5" id="sc">
             
                  
              {pdf.map((item,index)=>(
@@ -128,7 +139,7 @@ const [loading,setloading]=useState(false);
                 </div>
              )}
              {image&& image?.type?.startsWith("image/")&&(
-                <img className="w-30" src={URL.createObjectURL(image)}/>
+                <img className="w-30" src={preview}/>
              )}
 
                 </div>
@@ -143,8 +154,8 @@ const [loading,setloading]=useState(false);
                 
              )}
              </div>:<></>}
-             {file?
-             <Document  file={{url:URL.createObjectURL(file)}} >
+             {file&&preview?
+             <Document  file={{url:preview}} >
                     <Page   pageNumber={1} width={250} renderTextLayer={false} renderAnnotationLayer={false}/>
                 </Document>:<></>}
 

@@ -5,7 +5,11 @@ const cvslice=createSlice({
      name:"",
      email:"",
      password:""   
-    },token:"",backendemail:""},
+    },token:"",backendemail:"",
+    
+
+},
+
     reducers:{
         setlogin(state,action){
             state.loginstatus=action.payload;
