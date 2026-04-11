@@ -3,9 +3,10 @@ import upload from "../../assets";
 import {Document,Page,pdfjs} from "react-pdf";
 import workerSrc from "pdfjs-dist/build/pdf.worker?url";
 import {toast} from "react-toastify"
-import {useSelector,useDispatch} from "react-redux"
 import { control } from "../../redux/slice";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRef } from "react";
 import {ClipLoader} from "react-spinners";
 pdfjs.GlobalWorkerOptions.workerSrc=workerSrc
@@ -17,7 +18,7 @@ const Hero=()=>{
 
 },[]);
 const [preview,setpreview]=useState(null);
-
+const logindatastructure=useSelector(state=>state.main.logindata);
     const fileref=useRef();
 const [cloudurl,setcloudurl]=useState(null);
 const [loading,setloading]=useState(false);
@@ -27,6 +28,7 @@ const [loading,setloading]=useState(false);
     const token=useSelector(state=>state.main.token);
     const url="http://localhost:9000"
     const [file,setfile]=useState();
+    const[ats,setats]=useState();
     useEffect(()=>{
         if(file){
             setpreview(URL.createObjectURL(file));
@@ -40,6 +42,8 @@ const [loading,setloading]=useState(false);
                 if(response2.data.ans.length>0){
                     setcloudurl(response2.data.ans[0].filename);
                     setimage({type:"application/pdf"});
+                    const latest=response2.data.ans[0];
+                    setats(latest.analysis);
                 }
             }
             
@@ -65,6 +69,7 @@ const [loading,setloading]=useState(false);
             setloading(true);
            const formdata=new FormData();
            formdata.append("cv",file);
+           formdata.append("email",logindatastructure.email);
            const response=await axios.post(`${url}/api/cv/add`,formdata);
            const response2=await axios.get(`${url}/api/cv/get`);
            if(response2.data.status){
@@ -80,6 +85,8 @@ const [loading,setloading]=useState(false);
                 toast.success(response.data.message);
                 setcloudurl(response.data.url);
                 setimage(file);
+                setats(response.data.result);
+                fetchresume();
              }
              else{
                 setloading(false);
@@ -94,6 +101,7 @@ const [loading,setloading]=useState(false);
     const deleteresume=async(id)=>{
         setimage(null);
         setcloudurl(null);
+        setats(null);
         setloading(true);
         const newurl=url;
         const response=await axios.delete(`${newurl}/api/cv/del`,{
@@ -164,6 +172,16 @@ const [loading,setloading]=useState(false);
         <div>
             <button onClick={Sendtobackend} className="font-semibold mt-3 bg-pink-600 p-3 rounded-3xl text-white hover:bg-pink-900 transition ease-in-out duration-200 ">ANALYZE RESUME</button>
         </div>
+        </div>
+        <h1 className="text-center mt-30 text-4xl font-semibold text-red-700 capitalize">final result</h1>
+        <div className="flex justify-center items-center  text-center font-semibold bg-gradient-to-t to-green-100 from-green-200 ml-5 mr-5 rounded-2xl mt-20  ">
+                    
+                 <div className="mt-5">
+                    <h1 className="text-center w-60 lg:w-140 xl:w-200 md:w-140 text-blue-800 overflow-y-auto text-xl mt-10 mb-10">{ats}</h1>
+                </div>
+
+
+
         </div>
     </div>
 
