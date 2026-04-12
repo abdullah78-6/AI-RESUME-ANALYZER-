@@ -27,7 +27,7 @@ const extracttext=async(filepath)=>{
 
 }
 const addcv=async(req,res)=>{
-    const {email}=req.body;
+    // const {email}=req.body;
     try {
         if(!req.file){
            return  res.json({success:false,message:"Please upload cv "});
@@ -100,7 +100,7 @@ Can also apply for Junior Full Stack positions.
     const response=await model.generateContent(prompt);
     const airesult=response.response.text();
     console.log("AI RESULT",airesult);
-    const user=await usermodel.findOne({email});
+    // const user=await usermodel.findOne({email});
     
 const cvstore=new cvmodel({
             filename:pdfUrl,
@@ -108,7 +108,7 @@ const cvstore=new cvmodel({
             resource_type:result.resource_type,
             localfile:req.file.filename,
             analysis:airesult,
-            email:email
+            // email:email
         });
         await cvstore.save();
         return res.json({success:true,message:"Cv save sucessfully in database",url:pdfUrl,result:airesult});

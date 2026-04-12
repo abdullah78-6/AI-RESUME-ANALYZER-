@@ -5,7 +5,7 @@ const cvschema=mongoose.Schema({
      resource_type:{type:String,required:true},
     localfile:{type:String,required:true},
     analysis:{type:String},
-    email:{type:String,required:true},
+    // email:{type:String,required:true},
 
 })
 const cvmodel=mongoose.models.resume||mongoose.model("resume",cvschema);

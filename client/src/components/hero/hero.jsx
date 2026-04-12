@@ -69,7 +69,7 @@ const [loading,setloading]=useState(false);
             setloading(true);
            const formdata=new FormData();
            formdata.append("cv",file);
-           formdata.append("email",logindatastructure.email);
+        //    formdata.append("email",logindatastructure.email);
            const response=await axios.post(`${url}/api/cv/add`,formdata);
            const response2=await axios.get(`${url}/api/cv/get`);
            if(response2.data.status){
