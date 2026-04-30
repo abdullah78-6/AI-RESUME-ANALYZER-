@@ -10,7 +10,7 @@ const app=express();
 databaseconnection();
 
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"https://ai-resume-analyzer-6wpp.onrender.com",
     credentials:true
 }));
 app.use(express.json());
