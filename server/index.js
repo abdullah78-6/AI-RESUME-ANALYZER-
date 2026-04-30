@@ -5,10 +5,16 @@ import { databaseconnection } from "./config/dbconection.js";
 import Userrouter from "./routes/user-route.js";
 import addcvrouter from "./routes/addcv-route.js";
 import cvmakerrouter from "./routes/createcvroute.js";
+import cookieParser from "cookie-parser";
 const app=express();
 databaseconnection();
-app.use(cors());
+
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}));
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api/auth",Userrouter);
 app.use("/api/cv",addcvrouter);
 app.use("/api/cv",cvmakerrouter);

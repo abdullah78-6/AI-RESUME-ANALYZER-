@@ -27,7 +27,48 @@ const Login=()=>{
      const changeinginp=(type)=>{
             dispatch(control.setinput(type));
     }
-    const onlogin=async(event)=>{
+//     const onlogin=async(event)=>{
+//     event.preventDefault();
+//     let newurl=url;
+//     if(logintype==="signin"){
+//         // set login api url
+//         newurl=newurl+"/api/auth/log"
+//         // dispatch(control.setprofileicon(true));
+        
+      
+
+//     }
+//     else{
+//         // set signup api url
+//         newurl=newurl+"/api/auth/reg"
+//     }
+//     try{
+//         const response=await axios.post(newurl,logindatastructure);
+//     if(response.data.status){
+//           if(logintype==="signin"){
+            
+//             localStorage.setItem("token",response.data.token);
+//             localStorage.setItem("email",response.data.email);
+//           }
+        
+//         dispatch(control.setbackendemail(response.data.email));
+        
+//         toast.success(response.data.result);
+        
+//     }
+//     else{
+//         toast.error(response.data.result);
+//     }
+
+//     }
+//     catch(err){
+//         toast.error("SERVER ERROR");
+
+//     }
+    
+
+// }
+const onlogin=async(event)=>{
     event.preventDefault();
     let newurl=url;
     if(logintype==="signin"){
@@ -43,15 +84,27 @@ const Login=()=>{
         newurl=newurl+"/api/auth/reg"
     }
     try{
-        const response=await axios.post(newurl,logindatastructure);
+        const response=await axios.post(newurl,logindatastructure,{
+            withCredentials:true
+        });
     if(response.data.status){
           if(logintype==="signin"){
-            
-            localStorage.setItem("token",response.data.token);
-            localStorage.setItem("email",response.data.email);
+             const res=await axios.get(url+"/api/auth/pr",{
+            withCredentials:true,
+        })
+        if(res.data.status){
+            dispatch(control.setbackendemail(res.data.email));
+            dispatch(control.settoken(true));
+        }
+        else{
+            dispatch(control.setbackendemail(""));
+            dispatch(control.settoken(false));
+        }
+       
+       
           }
         
-        dispatch(control.setbackendemail(response.data.email));
+       
         
         toast.success(response.data.result);
         
@@ -68,6 +121,8 @@ const Login=()=>{
     
 
 }
+
+
 const Resetpassword=async()=>{
 try {
    

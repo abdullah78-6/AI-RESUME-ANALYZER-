@@ -48,7 +48,15 @@ const login=async(req,res)=>{
             return res.json({status:false,result:"PASSWORD IS INCORRECT"});
         }
         const token=createtoken(user._id);
-        return res.json({status:true,token,email:email,result:"LOGIN SUCCESSFULLY"});
+         res.cookie("token",token,{
+            httpOnly:true,
+            secure:true,
+            sameSite:"strict",
+            maxAge:24*60*60*1000
+        })
+
+
+        return res.json({status:true,email:email,result:"LOGIN SUCCESSFULLY"});
         
     } catch (error) {
         console.log("ERROR");
@@ -87,4 +95,39 @@ const Reset=async(req,res)=>{
     }
 
 }
-export {register,login,Reset}
+const Logout=async(req,res)=>{
+    try {
+        res.clearCookie("token",{
+        httpOnly:true,
+        // secure: process.env.NODE_ENV === "production",
+        secure:true,
+        sameSite:"strict",
+        
+    });
+    return res.json({status:true,message:"Logged Out "})
+        
+    } catch (error) {
+        console.log("logout ",error);
+        res.json({status:false,message:"Logout error"});
+        
+    }
+}
+const getProfile=async(req,res)=>{
+    try {
+        const token=req.cookies.token;
+        if(!token){
+            return res.json({status:false});
+        }
+        const decoded=jwt.verify(token,process.env.jwtsecret);
+        const user=await usermodel.findById(decoded.id).select("email");
+        if(!user){
+            return res.json({status:false});
+        }
+        res.json({status:true,email:user.email})
+    } catch (error) {
+        res.json({status:false});
+    }
+
+}
+
+export {register,login,Reset,Logout,getProfile}

@@ -7,8 +7,9 @@ import {useSelector} from "react-redux"
 import Step from "./components/steps/steps";
 const Inner=()=>{
   const loginstatus=useSelector(state=>state.main.loginstatus);
-return <>
-  <Navbar/>
+  const url="http://localhost:9000";
+return <> 
+  <Navbar url={url}/>
   {loginstatus?<Login/>:<></>}
   <Body/>
   <Step/>

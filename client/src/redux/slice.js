@@ -5,7 +5,7 @@ const cvslice=createSlice({
      name:"",
      email:"",
      password:""   
-    },token:"",backendemail:"",
+    },token:false,backendemail:"",
     
 
 },
