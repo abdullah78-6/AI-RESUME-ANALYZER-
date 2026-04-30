@@ -51,7 +51,7 @@ const login=async(req,res)=>{
          res.cookie("token",token,{
             httpOnly:true,
             secure:true,
-            sameSite:"strict",
+            sameSite:"none",
             maxAge:24*60*60*1000
         })
 
@@ -101,7 +101,7 @@ const Logout=async(req,res)=>{
         httpOnly:true,
         // secure: process.env.NODE_ENV === "production",
         secure:true,
-        sameSite:"strict",
+        sameSite:"none",
         
     });
     return res.json({status:true,message:"Logged Out "})
