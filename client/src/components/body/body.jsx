@@ -9,7 +9,7 @@ const Body=()=>{
     const [data,setdata]=useState([]);
     const token=useSelector(state=>state.main.token);
     const[form,setform]=useState(false);
-    const url="http://localhost:9000/api/cv/mak";
+    const url="https://ai-resume-analyzer-backend-qdzh.onrender.com/api/cv/mak";
     useEffect(()=>{
         const fileurl=localStorage.getItem("url");
         if(fileurl){
