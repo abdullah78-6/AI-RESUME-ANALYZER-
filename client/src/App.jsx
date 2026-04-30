@@ -7,7 +7,7 @@ import {useSelector} from "react-redux"
 import Step from "./components/steps/steps";
 const Inner=()=>{
   const loginstatus=useSelector(state=>state.main.loginstatus);
-  const url="http://localhost:9000";
+  const url="https://ai-resume-analyzer-backend-qdzh.onrender.com";
 return <> 
   <Navbar url={url}/>
   {loginstatus?<Login/>:<></>}
