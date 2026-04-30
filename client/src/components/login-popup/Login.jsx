@@ -12,7 +12,7 @@ const Login=()=>{
      const logintype=useSelector(state=>state.main.statelog);
     const inputtype=useSelector(state=>state.main.input);
     const logindatastructure=useSelector(state=>state.main.logindata);
-    const url="http://localhost:9000";
+    const url="https://ai-resume-analyzer-backend-qdzh.onrender.com";
     const[newpassword,setnewpassword]=useState("");
    const Onchangehandler=(event)=>{
     dispatch(control.setloginds({
@@ -130,7 +130,7 @@ try {
         toast.error("ENTER  PASSWORD AND EMAIL");
         return ;
     }
-        const response=await axios.post("http://localhost:9000/api/auth/new",{newpassword,email:logindatastructure.email});
+        const response=await axios.post("https://ai-resume-analyzer-backend-qdzh.onrender.com/api/auth/new",{newpassword,email:logindatastructure.email});
         if(response.data.status){
             toast.success(response.data.message);
         }
