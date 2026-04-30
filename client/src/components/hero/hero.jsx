@@ -26,7 +26,7 @@ const [loading,setloading]=useState(false);
     const[image,setimage]=useState(false);
     const dispatch=useDispatch();
     const token=useSelector(state=>state.main.token);
-    const url="http://localhost:9000"
+    const url="https://ai-resume-analyzer-backend-qdzh.onrender.com"
     const [file,setfile]=useState();
     const[ats,setats]=useState();
     useEffect(()=>{
